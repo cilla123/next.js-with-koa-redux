@@ -1,6 +1,4 @@
-### SSR next.js with koa.js
-
-__features includes__
+### SSR next.js with koa.js 
 
 +   custom routing
 +   redux integration
