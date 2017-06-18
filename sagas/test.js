@@ -1,5 +1,4 @@
-import { takeEvery } from 'redux-saga';
-import { take, fork, put } from 'redux-saga/effects';
+import { take, fork, put, takeEvery } from 'redux-saga/effects';
 
 import * as TEST_ACTIONS from '../ducks/test';
 
@@ -9,7 +8,7 @@ export function * doTest () {
 }
 
 function * observerDoTest () {
-  yield * takeEvery(TEST_ACTIONS.DO_TEST, doTest);
+  yield takeEvery(TEST_ACTIONS.DO_TEST, doTest);
 }
 
 export default function * watchTest () {

@@ -27,7 +27,6 @@ app.prepare()
         return app.render(req, res, route.component, query);
       } else {
         // display error other wise
-        res.statusCode = 404
         return app.render(req, res, '/error', query);
       }
     });
