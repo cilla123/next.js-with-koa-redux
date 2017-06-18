@@ -1,4 +1,5 @@
 import Immutable from 'immutable';
+import request from 'superagent';
 
 const initial_state = new Immutable.Map();
 
@@ -7,16 +8,15 @@ export const DO_TEST = 'DO_TEST';
 export const doTest = (data) => {
   return {
     type: DO_TEST,
-    payload: data
+    promise: request.post(`${API_URL}/tests`)
   }
 }
 
 export default function (state = initial_state, action) {
-  console.log(action, '<this is the action!');
   switch (action.type) {
-    case `${DO_TEST}_SUCCESS`:
-      return state.set('time', action.data.time);
+    case DO_TEST:
+      return state.set('time', JSON.stringify(action.res.body));
+    default:
+      return state;
   }
-
-  return state;
 }

@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 import withRedux from 'next-redux-wrapper';
 
 import Header from '../components/header';
-import rootSaga from '../sagas/root.js';
 
 import { initStore } from '../store.js';
 
@@ -20,11 +19,10 @@ class Index extends Component {
   }
 
   render () {
-
     return (
       <div>
         <Header />
-        Time is: {this.props.test.get('time')}
+        Model is: {this.props.test.get('time')}
       </div>
     );
   }
