@@ -1,6 +1,7 @@
 import Immutable from 'immutable';
 import request from 'superagent';
 
+const API_URL = 'http://vacucu.ci.zaje.me:3000/v1/api'
 const initial_state = new Immutable.Map();
 
 export const DO_TEST = 'DO_TEST';

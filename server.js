@@ -6,7 +6,7 @@ const Router = require('koa-router');
 const next = require('next');
 const { parse } = require('url')
 
-const router = require('./api/utils/router.js');
+const NextRouter = require('./routes').Router
 const db = require('./api/utils/db.js');
 const tests = require('./api/routes/tests');
 
@@ -30,22 +30,21 @@ n.prepare()
     // needed for making api calls within app
     app.use(tests.routes());
 
-    // ssr
-    app_router.get('*', async (ctx, next) => {
-        const parsedUrl = parse(ctx.req.url, true)
-        const { pathname, query } = parsedUrl
-        const route = router(pathname);  
+    // match all the navigation routes for UI
+    NextRouter.forEachPattern((page, pattern, defaultParams = {}) => app_router.get(pattern, async (ctx, next) => {
+      await n.render(ctx.req, ctx.res, `/${page}`, Object.assign({}, defaultParams, ctx.req.query, ctx.params));
+      ctx.respond = false;
+    }));
 
-        if (route) {
-          await n.render(ctx.req, ctx.res, route.component, query);        
-          ctx.respond = false;
-        } else {
-          // display error other wise
-          await n.render(ctx.req, ctx.res, '/error', query);
-          ctx.respond = false;
-        }
-        
+    // if not route matches show error
+    app_router.get('*', async (ctx, next) => {
+      const parsedUrl = parse(ctx.req.url, true)
+      const { query } = parsedUrl
+
+      await n.render(ctx.req, ctx.res, '/error', query);
+      ctx.respond = false;
     });
+
 
     app.use(async (ctx, next) => {
       ctx.res.statusCode = 200
